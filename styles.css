@@ -1,0 +1,79 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 20px;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+h2 {
+    margin-top: 30px;
+    color: #444;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+th, td {
+    border: 1px solid #aaa; /* Dünner Rand für alle Zellen */
+    padding: 20px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+th {
+    background-color: #ddd;
+    font-size: 1.2em;
+    position: sticky;
+    top: 0px;
+}
+
+td {
+    border-right: 1px solid #aaa; /* Dünner Rand zwischen Spalten */
+}
+
+th:first-child, td:first-child {
+    border-right: 2px solid black; /* Keine rechte Grenze für die letzte Spalte */
+}
+
+select {
+    padding: 8px;
+    font-size: 1.2em;
+    width: 80px; /* Schmaler als vorher */
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 1.2em;
+    width: 160px; /* Breiter als vorher */
+}
+
+.even-week {
+    background-color: #ffe6f2; /* Rosa für gerade Wochen */
+}
+
+.odd-week {
+    background-color: #e6f7ff; /* Hellblau für ungerade Wochen */
+}
+
+.sunday {
+    background-color: #99ccff; /* Dunkleres Blau für Sonntage */
+    font-weight: bold;
+}
+
+select {
+    border: none;
+    background-color: transparent;
+}
