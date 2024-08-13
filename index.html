@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meowzooka Proben</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>Meowzooka Proben</h1>
+
+<div id="calendars">
+    <script>
+        const participants = ['Cat', 'Annika', 'Friedemann', 'Marcus'];
+        const months = ['August', 'September', 'Oktober', 'November', 'Dezember'];
+        const daysInMonth = [31, 30, 31, 30, 31]; // Anzahl der Tage von August bis Dezember
+
+        // Funktion zum Ermitteln des Wochentags
+        function getWeekday(year, month, day) {
+            const date = new Date(year, month - 1, day);
+            const weekdays = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+            return weekdays[date.getDay()];
+        }
+
+        // Funktion zum Laden gespeicherter Daten (Ja/Vielleicht/Nein)
+        function loadSavedData(month, day, participant) {
+            const savedValue = localStorage.getItem(`${month}-${day}-${participant}`);
+            return savedValue ? savedValue : "Nein";
+        }
+
+        // Funktion zum Laden gespeicherter Uhrzeiten
+        function loadSavedTime(month, day, participant) {
+            const savedTime = localStorage.getItem(`time-${month}-${day}-${participant}`);
+            return savedTime ? savedTime : "";
+        }
+
+        // Funktion zum Speichern der Auswahl
+        function updateSelection(select, month, day, participant) {
+            const value = select.value;
+            const td = select.parentElement;
+            if (value === 'Ja') {
+                td.style.backgroundColor = 'lightgreen';
+            } else if (value === 'Vielleicht') {
+                td.style.backgroundColor = 'lightyellow';
+            } else {
+                td.style.backgroundColor = ''; // Keine Hintergrundfarbe für "Nein"
+            }
+            localStorage.setItem(`${month}-${day}-${participant}`, value);
+            console.log(`${participant} hat am ${day}. ${month} 2024 "${value}" gewählt.`);
+        }
+
+        // Funktion zum Speichern der Uhrzeit
+        function saveTime(month, day, participant, time) {
+            localStorage.setItem(`time-${month}-${day}-${participant}`, time);
+            console.log(`${participant} hat am ${day}. ${month} 2024 die Uhrzeit "${time}" angegeben.`);
+        }
+
+        months.forEach((month, index) => {
+            document.write(`<h2>${month} 2024</h2>`);
+            document.write('<table>');
+            document.write('<tr><th>Tag</th>');
+
+            participants.forEach(participant => {
+                document.write(`<th colspan="2">${participant}</th>`);
+            });
+
+            document.write('</tr>');
+
+            for (let day = 1; day <= daysInMonth[index]; day++) {
+                const weekday = getWeekday(2024, index + 8, day); // August entspricht Monat 8
+                const isSunday = weekday === 'So';
+                const weekNumber = Math.floor((day + getWeekday(2024, index + 8, 1)) / 7);
+                const weekColorClass = isSunday ? 'sunday' : weekNumber % 2 === 0 ? 'even-week' : 'odd-week';
+
+                document.write(`<tr class="${weekColorClass}">`);
+                document.write(`<td>${weekday}, ${day}</td>`);
+
+                participants.forEach(participant => {
+                    const savedValue = loadSavedData(month, day, participant);
+                    const savedTime = loadSavedTime(month, day, participant);
+                    let bgColor = '';
+                    if (savedValue === 'Ja') {
+                        bgColor = 'lightgreen';
+                    } else if (savedValue === 'Vielleicht') {
+                        bgColor = 'lightyellow';
+                    }
+
+                    document.write(`
+                        <td style="background-color: ${bgColor};">
+                            <select onchange="updateSelection(this, '${month}', ${day}, '${participant}')">
+                                <option value="Nein" ${savedValue === 'Nein' ? 'selected' : ''}>Nein</option>
+                                <option value="Ja" ${savedValue === 'Ja' ? 'selected' : ''}>Ja</option>
+                                <option value="Vielleicht" ${savedValue === 'Vielleicht' ? 'selected' : ''}>Vielleicht</option>
+                            </select>
+                        </td>
+                        <td><input type="text" placeholder="Uhrzeit" value="${savedTime}" onchange="saveTime('${month}', ${day}, '${participant}', this.value)"></td>
+                    `);
+                });
+
+                document.write('</tr>');
+            }
+
+            document.write('</table>');
+        });
+
+    </script>
+
+</div>
+
+</body>
+</html>
